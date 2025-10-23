@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="text-center mb-5">
+  <h1 class="display-4 mb-3"><i class="fas fa-gem me-3"></i>Jose's Jewels</h1>
+  <p class="lead">Discover exquisite jewelry pieces available for borrowing</p>
+</div>
+<div class="row">
+  {% for j in jewels %}
+  <div class="col-lg-4 col-md-6 mb-4">
+    <div class="card h-100">
+      {% if j.image_filename %}
+        <img src="{{ url_for('uploaded_file', filename=j.image_filename) }}" class="card-img-top" alt="{{ j.name }}">
+      {% else %}
+        <div class="card-img-top d-flex align-items-center justify-content-center bg-secondary text-white" style="height: 400px;">
+          <i class="fas fa-image fa-3x"></i>
+        </div>
+      {% endif %}
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title mb-3"><i class="fas fa-crown me-2 text-warning"></i>{{ j.name }}</h5>
+        <p class="card-text flex-grow-1">{{ j.description[:150] }}{% if j.description|length > 150 %}...{% endif %}</p>
+        <div class="mb-3">
+          <span class="badge bg-info me-2"><i class="fas fa-tag me-1"></i>{{ j.category or 'Uncategorized' }}</span>
+          <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i>{{ j.count }} Available</span>
+        </div>
+        <div class="row text-center mb-3">
+          <div class="col-6">
+            <small class="text-muted d-block">Price/hr</small>
+            <strong class="text-success">₹{{ j.price_per_hour }}</strong>
+          </div>
+          <div class="col-6">
+            <small class="text-muted d-block">Fine/hr</small>
+            <strong class="text-danger">₹{{ j.fine_per_hour }}</strong>
+          </div>
+        </div>
+        <a href="{{ url_for('request_jewel', jewel_id=j.id) }}" class="btn btn-primary mt-auto"><i class="fas fa-hand-paper me-2"></i>Request Jewel</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% if not jewels %}
+<div class="text-center mt-5">
+  <i class="fas fa-box-open fa-4x text-muted mb-3"></i>
+  <h3 class="text-muted">No jewels available at the moment</h3>
+  <p class="text-muted">Check back later for new additions to our collection.</p>
+</div>
+{% endif %}
+{% endblock %}

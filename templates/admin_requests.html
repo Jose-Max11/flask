@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>All Borrow Requests</h2>
+<table class="table">
+  <thead><tr><th>#</th><th>User</th><th>Jewel</th><th>Period</th><th>Status</th><th>Amount</th><th>Fine</th><th>Notes</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for r in requests %}
+    <tr>
+      <td>{{ r.id }}</td>
+      <td>{{ r.user.name }} ({{ r.user.email }})</td>
+      <td>{{ r.jewel.name }}</td>
+      <td>{{ r.start_time.strftime("%Y-%m-%d %H:%M") }} → {{ r.end_time.strftime("%Y-%m-%d %H:%M") }}</td>
+      <td>{{ r.status }}</td>
+      <td>₹{{ "%.2f"|format(r.calculated_amount or 0) }}</td>
+      <td>₹{{ "%.2f"|format(r.fine_amount or 0) }}</td>
+      <td>{{ r.notes or '--' }}</td>
+      <td style="text-align: center;">
+        {% if r.status == 'pending' %}
+          <form style="display:inline" method="post" action="{{ url_for('approve_request', req_id=r.id) }}">
+            <button class="btn btn-sm btn-success" title="Approve"><i class="fas fa-check"></i></button>
+          </form>
+          <a href="{{ url_for('reject_request', req_id=r.id) }}" class="btn btn-sm btn-danger" title="Reject"><i class="fas fa-times"></i></a>
+        {% elif r.status == 'approved' %}
+          <form style="display:inline" method="post" action="{{ url_for('mark_returned', req_id=r.id) }}">
+            <button class="btn btn-sm btn-primary" title="Mark Returned"><i class="fas fa-undo"></i></button>
+          </form>
+        {% else %}
+          --
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

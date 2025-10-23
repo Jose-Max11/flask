@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Your Requests</h2>
+<a class="btn btn-secondary mb-3" href="{{ url_for('index') }}">Back to catalog</a>
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th><th>Jewel</th><th>Period</th><th>Status</th><th>Amount</th><th>Fine</th><th>Notes</th><th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for r in requests %}
+    <tr>
+      <td>{{ r.id }}</td>
+      <td>{{ r.jewel.name }}</td>
+      <td>{{ r.start_time.strftime("%Y-%m-%d %H:%M") }} → {{ r.end_time.strftime("%Y-%m-%d %H:%M") }}</td>
+      <td>{{ r.status }}</td>
+      <td>₹{{ "%.2f"|format(r.calculated_amount or 0) }}</td>
+      <td>₹{{ "%.2f"|format(r.fine_amount or 0) }}</td>
+      <td>{{ r.notes or '--' }}</td>
+      <td>
+        {% if r.status=='pending' %}Pending approval{% elif r.status=='approved' %}Awaiting return{% elif r.status=='returned' %}Returned{% else %}{{ r.status }}{% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Manage Jewels</h2>
+<a class="btn btn-success mb-3" href="{{ url_for('add_jewel') }}">Add New</a>
+<table class="table">
+  <thead><tr><th>#</th><th>Name</th><th>Count</th><th>Price/hr</th><th>Fine/hr</th><th>Image</th><th>Action</th></tr></thead>
+  <tbody>
+    {% for j in jewels %}
+    <tr>
+      <td>{{ j.id }}</td>
+      <td>{{ j.name }}</td>
+      <td>{{ j.count }}</td>
+      <td>₹{{ j.price_per_hour }}</td>
+      <td>₹{{ j.fine_per_hour }}</td>
+      <td>
+        {% if j.image_filename %}
+          <img src="{{ url_for('uploaded_file', filename=j.image_filename) }}" width="80">
+        {% endif %}
+      </td>
+      <td style="text-align: center;">
+        <a href="{{ url_for('edit_jewel', jewel_id=j.id) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
+        <form method="post" action="{{ url_for('delete_jewel', jewel_id=j.id) }}" onsubmit="return confirm('Delete?');" style="display:inline;">
+          <button class="btn btn-danger btn-sm" title="Delete"><i class="fas fa-trash"></i></button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

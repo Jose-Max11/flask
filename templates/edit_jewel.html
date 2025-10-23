@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Edit Jewel</h2>
+<form method="post" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label>Name</label>
+    <input class="form-control" name="name" value="{{ jewel.name }}" required>
+  </div>
+  <div class="mb-3">
+    <label>Category</label>
+    <input class="form-control" name="category" value="{{ jewel.category }}">
+  </div>
+  <div class="mb-3">
+    <label>Description</label>
+    <textarea class="form-control" name="description" required>{{ jewel.description }}</textarea>
+  </div>
+  <div class="mb-3">
+    <label>Price per hour</label>
+    <input class="form-control" name="price_per_hour" type="number" step="0.01" value="{{ jewel.price_per_hour }}" required>
+  </div>
+  <div class="mb-3">
+    <label>Fine per hour</label>
+    <input class="form-control" name="fine_per_hour" type="number" step="0.01" value="{{ jewel.fine_per_hour }}" required>
+  </div>
+  <div class="mb-3">
+    <label>Count</label>
+    <input class="form-control" name="count" type="number" value="{{ jewel.count }}" required>
+  </div>
+  <div class="mb-3">
+    <label>Image</label>
+    <input class="form-control" name="image" type="file">
+    {% if jewel.image_filename %}
+      <img src="{{ url_for('uploaded_file', filename=jewel.image_filename) }}" width="100" class="mt-2">
+    {% endif %}
+  </div>
+  <button class="btn btn-primary">Update</button>
+</form>
+{% endblock %}

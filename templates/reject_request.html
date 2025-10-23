@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Reject Request</h2>
+<p>Rejecting request #{{ req.id }} for {{ req.jewel.name }} by {{ req.user.name }}</p>
+<form method="post">
+  <div class="mb-3">
+    <label>Reason for rejection</label>
+    <textarea class="form-control" name="reason" required></textarea>
+  </div>
+  <button class="btn btn-warning">Reject</button>
+  <a href="{{ url_for('admin_requests') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}
