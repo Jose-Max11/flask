@@ -13,3 +13,5 @@ with app.app_context():
         print('Admin user created')
     else:
         print('Admin user already exists')
+
+# This script is for local setup; for production, run it manually or integrate into app startup if needed.

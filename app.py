@@ -6,8 +6,8 @@ from datetime import datetime, timedelta
 import os
 
 app = Flask(__name__)
-app.secret_key = "jewel_secret"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///jewel_system.db'
+app.secret_key = os.environ.get('SECRET_KEY', 'jewel_secret')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///instance/jewel_system.db'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 db.init_app(app)
 
@@ -222,4 +222,4 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
